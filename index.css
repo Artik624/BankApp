@@ -1,0 +1,12 @@
+h1{
+    
+}
+.login-form{
+    border: 1px solid black;
+}
+#name{
+    align-content: flex-start;
+}
+body{
+    text-align: center;
+}
