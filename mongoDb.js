@@ -1,33 +1,50 @@
-const MongoClient = require("mongodb").MongoClient
-const uri = "mongodb+srv://arti:admin1234@bankappcluster.lgthl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-const client = new MongoClient(uri)
-const connect = client.connect()
+import { MongoClient } from 'mongodb'
+//const MongoClient = reuire('mongodb')
 
-function findUser(userName){
-    connect.then(async () =>{
-        try{
-            const db = client.db("BankApp")
-            console.log(`connected to database ${db.databaseName}`)
-            const users = db.collection("Users")
-            console.log(`connected to collection ${users.collectionName}`)
-            
-            console.log(userName)
-            const searchCursor =  users.find({"name":userName })  // find document 
-            const result =  await searchCursor.toArray()
-            console.table(result)
-        }
-        catch{
-            //console.error(`an error has occcured!@$$@$!$@$@$ ${error}`)
-        }
-        finally{
-            client.close()
-        }
-    })
+// let user = app.get((req, res) =>{
+
+// })
+
+
+
+
+function connectToDB(){
+    const uri = "mongodb+srv://arti:admin1234@bankappcluster.lgthl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    const client = new MongoClient(uri)
+    //console.log(client)
+    return client
+}
+
+
+
+export async function findUser(userName, pass){
+    const client =  connectToDB()
+    await client.connect()
+    try{
+        const db = client.db("BankApp")
+        console.log(`connected to database ${db.databaseName}`)
+        const users = db.collection("Users")
+        console.log(`connected to collection ${users.collectionName}`)
+        
+        const searchCursor =  users.find({"name":userName, "pass" : pass })  // find document 
+        const result =  await searchCursor.toArray()
+        //console.log(result)
+        return result
+        
+    }
+    catch (error){
+        console.log(`an error has occcured!@$$@$!$@$@$ ${error}`)
+        
+    }
+    finally{
+        await client.close()
+    }
+    
     
 }
 
 
-findUser("test1")
+//findUser("test1")
 
 
 
