@@ -1,12 +1,4 @@
 import { MongoClient } from 'mongodb'
-//const MongoClient = reuire('mongodb')
-
-// let user = app.get((req, res) =>{
-
-// })
-
-
-
 
 function connectToDB(){
     const uri = "mongodb+srv://arti:admin1234@bankappcluster.lgthl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
@@ -14,8 +6,6 @@ function connectToDB(){
     //console.log(client)
     return client
 }
-
-
 
 export async function findUser(userName, pass){
     const client =  connectToDB()
@@ -28,48 +18,38 @@ export async function findUser(userName, pass){
         
         const searchCursor =  users.find({"name":userName, "pass" : pass })  // find document 
         const result =  await searchCursor.toArray()
-        //console.log(result)
         return result
-        
     }
     catch (error){
         console.log(`an error has occcured!@$$@$!$@$@$ ${error}`)
-        
     }
     finally{
         await client.close()
     }
-    
-    
 }
 
+export async function addUser(userName, pass ) {
+    const client =  connectToDB()
+    await client.connect()
+    try {
+        const db = client.db("BankApp")
+        console.log(`connected to database ${db.databaseName}`)
+        const users = db.collection("Users")
+        console.log(`connected to collection ${users.collectionName}`)
 
-//findUser("test1")
+        await users.insertOne({"name":userName, "pass":pass})
+        console.log("user added")
+        // if(findUser(userName, pass) == undefined){
+            
+        // }else{
+        //     console.log("user taken")
+        // }
 
-
-
-
-// async function connect(f){
-    
-    
-//     try{
         
-//         const db = client.db("BankApp")
-//         console.log(`connected to database ${db.databaseName}`)
-//         const users = db.collection("Users")
-//         console.log(`connected to collection ${users.collectionName}`)
-
-        
-//         // const searchCursor = await users.find({"name":"test1" })  // find document 
-//         // const result =  await searchCursor.toArray()
-//         // console.table(result)
-        
-//     }
-//      catch (error) {
-//         console.error(`an error has occcured!@$$@$!$@$@$ ${error}`)
-//     }
-//     finally{
-//         client.close()
-//     }
-// }
-
+    } catch (error) {
+        console.log(`an error has occcured!@$$@$!$@$@$ ${error}`)
+    }
+    finally{
+        //await client.close()
+    }
+}
