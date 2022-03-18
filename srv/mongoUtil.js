@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb'
-const uri = "mongodb+srv://arti:admin1234@bankappcluster.lgthl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const uri = "mongodb+srv://arti:admin1234@bankappcluster.lgthl.mongodb.net/BankApp?retryWrites=true&w=majority"
 
 var _db 
 

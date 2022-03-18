@@ -34,8 +34,6 @@
 
                 let userName = nameEl.value
                 let user = {userName:nameEl.value, pass:passEl.value}
-                
-
                 getUser()
 
                 async function red() {
@@ -70,7 +68,6 @@
                     const res = await fetch('/register', {method:'GET'})
                     window.location.href = res.url
                 })()
-                
                 
             })
             
