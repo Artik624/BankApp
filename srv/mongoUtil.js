@@ -5,9 +5,7 @@ var _db
 
 module.exports = {
     connectToServer : (callback)=>{
-        MongoClient.connect(uri, {
-            userNewUrlParser: true
-        },(err, client)=>{
+        MongoClient.connect(uri, {userNewUrlParser: true},(err, client)=>{
             _db = client.db('BankApp')
             return callback(err)
         })
