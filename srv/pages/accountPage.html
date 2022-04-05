@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <head></head>
 <header>
-    <h1>Hello Customer name</h1>
+    <h1 id="name"></h1>
     <h2>Your balance is : XXXX</h2>
 </header>
-<body>
+<body onload= "name()">
     <p>History actions </p>
     <ul>
         <li>1</li>
         <li>2</li>
     </ul>
+    <script>
+        
+        async function name(){
+            console.log('test')
+             const response =  await fetch('/getUserInfo', {
+                method:'GET',
+            })
+            const name = await response.json()
+            console.log(name)
+            const nameEl = document.getElementById("name");
+            nameEl.innerHTML=`Hello ${name.name}`
+        }
+    </script>
 </body>

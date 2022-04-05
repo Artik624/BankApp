@@ -22,12 +22,12 @@
             
             subBtn.addEventListener('click', () =>{
                 const newUser = {
-                    name:nameEl.value,
+                    userName:nameEl.value,
                     pass:passEl.value
                 }
-                console.log(newUser)
+                //console.log(newUser)
                 
-                fetch('/newUser', {
+                fetch('/posts/newUser', {
                     method:'POST',
                     headers:{
                         'content-type' : 'application/json'

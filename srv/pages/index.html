@@ -24,40 +24,33 @@
         <script>
             const nameEl = document.getElementById("nameInpt")
             const passEl = document.getElementById("pswdInpt")
-            
             const loginBtn = document.getElementById("login-btn")
+            const regBtn = document.getElementById("register-btn")
             const testEl = document.getElementById('test')
              
             loginBtn.addEventListener("click",function(){
-            let userName = nameEl.value
             let user = {userName:nameEl.value, pass:passEl.value}
-            //console.log(user)
-            const options = {
+            
+            getUser()
+            async function getUser(){
+                
+                const response =  await fetch('/posts/login', {
                 method:'POST',
                 headers:{
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(user)
-            }
-
-            if(getUser() === true ){
-                red() 
-            }
-
-            async function red() {
-                    const res = await fetch('/account', {method:'GET'})
-                    window.location.href = res.url
-                }
-            async function getUser(){
-                const response =  await fetch('/user', options)
+            })
                 const name = await response.json() 
+
                 if(name[0] != undefined) {
-                    testEl.innerHTML= `welcome ${name[0].name}`
-                    
-                    return true
+                    testEl.innerHTML= `welcome ${name[0].name}`;
+                    (async () =>{
+                        const res = await fetch('/gets/account', {method:'GET'})
+                        window.location.href = res.url
+                    })();
                 }else{
                     testEl.innerHTML= "invalid user or password "
-                    return false
                 }                
             }
             })
@@ -65,7 +58,7 @@
 
             regBtn.addEventListener('click', () =>{
                 (async ()=> {
-                    const res = await fetch('/regPage', {method:'GET'})
+                    const res = await fetch('/gets/regPage', {method:'GET'})
                     window.location.href = res.url
                 })()
                 
