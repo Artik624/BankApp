@@ -29,13 +29,17 @@ app.get('/', (req,res) => { //root directory
     .sendFile(`${pagePath}/index.html`)
 })
 
-
-
 function func(user){
     app.get('/getUserInfo', async (req,res)=>{
         res.send(user)
     }) 
 }
+
+
+
+
+
+
 
 // app.post('/login', async (req,res)=>{
     

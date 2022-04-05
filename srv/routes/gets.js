@@ -6,11 +6,6 @@ const router = express.Router()
 const __dirname = path.resolve()
 const pagePath = path.join(`${__dirname}`,'./','pages')
 
-// router.get('/', (req,res) => { //root directory
-//     res
-//     .status(200)
-//     .sendFile(`${pagePath}/index.html`)
-// })
 
 router.get('/regPage',(req,res) =>{
     res

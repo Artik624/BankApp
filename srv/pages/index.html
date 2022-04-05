@@ -43,7 +43,7 @@
             })
                 const name = await response.json() 
 
-                if(name[0] != undefined) {
+                if(name[0] != null) {
                     testEl.innerHTML= `welcome ${name[0].name}`;
                     (async () =>{
                         const res = await fetch('/gets/account', {method:'GET'})
