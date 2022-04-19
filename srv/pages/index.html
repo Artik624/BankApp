@@ -6,18 +6,28 @@
     
     <header>
         <h1>BankApp</h1>
+        <link rel="stylesheet" href="index.css" type="text/css">
     </header>
         
     <body>
         
+        
         <div class="login-form">
-            <form action="" method="post">
-                Name: <input name="name" type="text" id="nameInpt" autocomplete="off"> <br>
-                Password : <input min="1" name="passwd" id="pswdInpt" autocomplete="off">
+            <form id="inptForm" action="" method="post">
+                <p>Name:</p>
+                <div id="username"><input name="name" type="text" id="nameInpt" autocomplete="off"></div>
+                <p>Password :</p>
+                <div id="password"><input min="1" name="passwd" id="pswdInpt" autocomplete="off"></div>
+
+                
             </form>
-            <button id="login-btn">Login</button>
-            <button id="forgotPswd-btn">Forgot Password</button>
-            <button id="register-btn">Register</button>
+            <div id="buttons">
+                <button id="login-btn">Login</button>
+                <button id="forgotPswd-btn">Forgot Password</button>
+                <button id="register-btn">Register</button>
+                </div>
+            
+            
             <p id="test"></p>
         </div>
         
@@ -34,6 +44,7 @@
             getUser()
             async function getUser(){
                 
+                console.log(user)
                 const response =  await fetch('/posts/login', {
                 method:'POST',
                 headers:{
@@ -42,15 +53,15 @@
                 body: JSON.stringify(user)
             })
                 const name = await response.json() 
-
-                if(name[0] != null) {
-                    testEl.innerHTML= `welcome ${name[0].name}`;
+                console.log(name)
+                if(name != null) {
+                    testEl.textContent= `welcome ${name[0].name}`;
                     (async () =>{
                         const res = await fetch('/gets/account', {method:'GET'})
                         window.location.href = res.url
                     })();
                 }else{
-                    testEl.innerHTML= "invalid user or password "
+                    testEl.textContent= "invalid user or password "
                 }                
             }
             })

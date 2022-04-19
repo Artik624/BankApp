@@ -20,7 +20,7 @@
             const name = await response.json()
             console.log(name)
             const nameEl = document.getElementById("name");
-            nameEl.innerHTML=`Hello ${name.name}`
+            nameEl.textContent=`Hello ${name.name}`
         }
     </script>
 </body>

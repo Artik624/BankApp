@@ -19,6 +19,7 @@ const port = process.env.PORT
 const __dirname = path.resolve()
 const pagePath = path.join(`${__dirname}`,'./','pages')
 
+app.use(express.static('pages'))
 app.use(express.json())
 app.use('/posts', postsRoute)
 app.use('/gets', getsRoute)

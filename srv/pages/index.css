@@ -1,12 +1,66 @@
 h1{
+    color: rgba(7, 24, 71, 0.822);
+    text-align: center;
+}
+
+body{
+    margin:0;
+    padding: 0;
     
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+
 }
 .login-form{
     border: 1px solid black;
+    background: linear-gradient(45deg,  #35394a 0%,#1f222e 100%);
+    width: 200px;
+    
 }
-#name{
-    align-content: flex-start;
+
+
+#inptForm{
+    border: 1px black solid;
+    border-radius: 10px;
+    background: linear-gradient(45deg,  #35394a 0%,#1f222e 100%);
+    
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }
-body{
-    text-align: center;
+#inptForm p{
+    font-size: larger;
+    color: aliceblue;
 }
+
+#buttons{
+    width : 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top:10px;
+}
+#buttons button{
+    padding: 10px;
+    background-color: #697184;
+    border-radius: 30px;
+}
+#buttons button:hover{
+    background-color: rgb(161, 146, 175);
+    
+}
+#nameInpt, #pswdInpt{
+    height: 25px;
+    width: 100%;
+}
+#username p, #password p{
+    /*border: 1px green solid ;*/
+    
+    
+}
+
