@@ -1,5 +1,5 @@
 import express from "express";
-import Users from '../Users.js'
+import Users from '../modules/Users.js'
 import login_post from '../controllers/authControllers.js'
 import bcrypt from "bcrypt"
 const router = express.Router()

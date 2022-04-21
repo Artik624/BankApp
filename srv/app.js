@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import {mongoose} from 'mongoose'
 import dotenv from 'dotenv'
-import Users from './Users.js'
+import Users from './modules/Users.js'
 
 import postsRoute from './routes/posts.js'
 import getsRoute from './routes/gets.js'
@@ -20,6 +20,8 @@ const __dirname = path.resolve()
 const pagePath = path.join(`${__dirname}`,'./','pages')
 
 app.use(express.static('pages'))
+app.use(express.static('modules'))
+
 app.use(express.json())
 app.use('/posts', postsRoute)
 app.use('/gets', getsRoute)
@@ -30,6 +32,9 @@ app.get('/', (req,res) => { //root directory
     .sendFile(`${pagePath}/index.html`)
 })
 
+app.get('index.js',(req,res) =>{
+    res.sendFile(`../index.js`)
+})
 function func(user){
     app.get('/getUserInfo', async (req,res)=>{
         res.send(user)

@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import Users from '../Users.js'
+import Users from '../modules/Users.js'
 
 export const login_post = async function (req,res){
     let user = await Users.find({name:req.body.userName})

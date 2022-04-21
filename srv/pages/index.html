@@ -14,10 +14,9 @@
         
         <div class="login-form">
             <form id="inptForm" action="" method="post">
-                <p>Name:</p>
-                <div id="username"><input name="name" type="text" id="nameInpt" autocomplete="off"></div>
-                <p>Password :</p>
-                <div id="password"><input min="1" name="passwd" id="pswdInpt" autocomplete="off"></div>
+                <div id="username"><input name="name" type="text" id="nameInpt" autocomplete="off" placeholder="Username"></div>
+                <div id="password"><input min="1" name="passwd" id="pswdInpt" autocomplete="off" placeholder="Password"></div>
+                <div id="email"><input min="1" name="email" id="emailInpt" autocomplete="off" placeholder="Email"></div>
 
                 
             </form>
@@ -28,58 +27,19 @@
                 </div>
             
             
-            <p id="test"></p>
+            
         </div>
         
-        <script>
-            const nameEl = document.getElementById("nameInpt")
-            const passEl = document.getElementById("pswdInpt")
-            const loginBtn = document.getElementById("login-btn")
-            const regBtn = document.getElementById("register-btn")
-            const testEl = document.getElementById('test')
-             
-            loginBtn.addEventListener("click",function(){
-            let user = {userName:nameEl.value, pass:passEl.value}
-            
-            getUser()
-            async function getUser(){
-                
-                console.log(user)
-                const response =  await fetch('/posts/login', {
-                method:'POST',
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-                const name = await response.json() 
-                console.log(name)
-                if(name != null) {
-                    testEl.textContent= `welcome ${name[0].name}`;
-                    (async () =>{
-                        const res = await fetch('/gets/account', {method:'GET'})
-                        window.location.href = res.url
-                    })();
-                }else{
-                    testEl.textContent= "invalid user or password "
-                }                
-            }
-            })
-    
-
-            regBtn.addEventListener('click', () =>{
-                (async ()=> {
-                    const res = await fetch('/gets/regPage', {method:'GET'})
-                    window.location.href = res.url
-                })()
-                
-                
-            })
-            
-             
-
-        </script>
-
+       
+        <script src="index.js" type="module"></script>
     </body>
 
 </html>
+
+
+
+
+
+   
+     
+
