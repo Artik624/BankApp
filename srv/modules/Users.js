@@ -13,6 +13,12 @@ export const userSchema = new mongoose.Schema({
         required:[true, "Please enter a password"],
         validate:[(val) => { }, 'custome validate']
     },
+    
+    transactions:{
+        date:{type:Date, default:Date.now},
+        amount:{type:Number, default:0},
+        currentBalance:{type:Number, default:0}
+    },
     }, 
     {collection: 'Users'})
 

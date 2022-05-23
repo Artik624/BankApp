@@ -9,6 +9,7 @@ router.use(express.json())
 router.post('/login', login_post)
 
 
+
 router.post('/newUser', async (req,res) =>{
     try {
         const hashedPass = await bcrypt.hashSync(req.body.pass, 10)

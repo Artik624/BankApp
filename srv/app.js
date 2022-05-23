@@ -3,9 +3,10 @@ import path from 'path'
 import {mongoose} from 'mongoose'
 import dotenv from 'dotenv'
 import Users from './modules/Users.js'
-
 import postsRoute from './routes/posts.js'
 import getsRoute from './routes/gets.js'
+import jwt from 'jsonwebtoken'
+
 
 dotenv.config()
 
@@ -24,7 +25,27 @@ app.use(express.static('modules'))
 
 app.use(express.json())
 app.use('/posts', postsRoute)
-app.use('/gets', getsRoute)
+//app.use('/gets', getsRoute)
+
+app.get('/gets/account', authenticateToken, (req,res) => {
+    console.log("originalURL : " + req.originalUrl)
+    res.sendFile(`${pagePath}/accountPage.html`)
+})
+
+function authenticateToken(req, res, next){
+    console.log(req.method, req.path)
+    const authHeader =  req.headers['authorization']
+    console.log('auth header ' + authHeader)
+    const token = authHeader && authHeader.split(' ')[1]
+    console.log('token ' + token)
+    if(token == null) return res.sendStatus(401)
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) =>{
+        if(err) return res.sendStatus(403)
+        //req.user = user
+        next()
+    })
+}
 
 app.get('/', (req,res) => { //root directory
     res
@@ -32,9 +53,7 @@ app.get('/', (req,res) => { //root directory
     .sendFile(`${pagePath}/index.html`)
 })
 
-app.get('index.js',(req,res) =>{
-    res.sendFile(`../index.js`)
-})
+
 function func(user){
     app.get('/getUserInfo', async (req,res)=>{
         res.send(user)
