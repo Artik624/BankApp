@@ -49,6 +49,10 @@ body {
     
     color: aliceblue;
 }
+#message{
+    color: aliceblue;
+    margin-top: 30px;
+}
 
 #buttons{
     display: flex;

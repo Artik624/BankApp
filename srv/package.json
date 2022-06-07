@@ -11,11 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-csp-header": "^5.1.0",
+    "express-no-favicons": "0.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.7",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "serve-favicon": "^2.5.0"
   }
 }

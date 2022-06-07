@@ -2,10 +2,15 @@ import express from 'express'
 import path from 'path'
 import {mongoose} from 'mongoose'
 import dotenv from 'dotenv'
-import Users from './modules/Users.js'
+import Users from './Users.js'
 import postsRoute from './routes/posts.js'
 import getsRoute from './routes/gets.js'
 import jwt from 'jsonwebtoken'
+import serveFavicon from 'serve-favicon'
+import {expressCspHeader, INLINE, NONE, SELF} from 'express-csp-header'
+import cookieParser from 'cookie-parser'
+
+
 
 
 dotenv.config()
@@ -18,80 +23,38 @@ mongoose.connect(process.env.DB_CONNECTION,  {useNewUrlParser: true}, () => {
 const app = express()
 const port = process.env.PORT 
 const __dirname = path.resolve()
-const pagePath = path.join(`${__dirname}`,'./','pages')
+const publicPath = path.join(`${__dirname}`,'./','public')
+const favicon = path.join(`${__dirname}`,'./','favicon.ico')
+const a =  path.join(`${__dirname}`,'/','index.html')
 
-app.use(express.static('pages'))
-app.use(express.static('modules'))
 
-app.use(express.json())
-app.use('/posts', postsRoute)
-//app.use('/gets', getsRoute)
 
-app.get('/gets/account', authenticateToken, (req,res) => {
-    console.log("originalURL : " + req.originalUrl)
-    res.sendFile(`${pagePath}/accountPage.html`)
-})
+app.use(express.static('public'));
+//app.use(express.static('modules'));
+app.use(serveFavicon(favicon))
+app.use(express.json());
+app.use('/posts', postsRoute);
+app.use('/gets', getsRoute)
+app.use(cookieParser())
+app.use(expressCspHeader({
+    useDefaults:true,
+    directives: {
+        'default-src': [SELF],
+        'script-src': [SELF, INLINE],
+        'style-src': [SELF, INLINE],
+        'img-src': [ SELF]
+    },
+    //reportOnly:true
+    
+}));
 
-function authenticateToken(req, res, next){
-    console.log(req.method, req.path)
-    const authHeader =  req.headers['authorization']
-    console.log('auth header ' + authHeader)
-    const token = authHeader && authHeader.split(' ')[1]
-    console.log('token ' + token)
-    if(token == null) return res.sendStatus(401)
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) =>{
-        if(err) return res.sendStatus(403)
-        //req.user = user
-        next()
-    })
-}
 
 app.get('/', (req,res) => { //root directory
     res
-    .status(200)
-    .sendFile(`${pagePath}/index.html`)
+    .sendFile(`${publicPath}/index.html`)
 })
 
 
-function func(user){
-    app.get('/getUserInfo', async (req,res)=>{
-        res.send(user)
-    }) 
-}
-
-
-
-
-
-
-
-// app.post('/login', async (req,res)=>{
-    
-//     const userName = {name:req.body.userName}
-//     try {
-//         console.log("test1")
-//         res.send(await Users.find({name:req.body.userName, pass:req.body.pass})) 
-//         //console.log(userName)
-//         func(userName)
-            
-//     } catch (error) {
-//         console.log(error.message)
-//     }
-// })
-
-
-// app.get('/account', (req,res) => {
-//     res.sendFile(`${pagePath}/accountPage.html`)
-// })
-
-// app.post('/newUser', async (req,res) =>{
-//     try {
-//         const user = await Users.create({name:req.body.userName, pass:req.body.pass})
-//         console.log(user)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
 
 app.listen(port, () => console.log("listening on port " + port))

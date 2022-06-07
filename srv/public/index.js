@@ -6,6 +6,7 @@ const regBtn = document.getElementById("register-btn")
 const forgotBtn = document.querySelector("#forgotPswd-btn")
 const testEl = document.getElementById('test')
 const loginFormEl = document.querySelector(".login-form")
+const messageEl = document.querySelector("#message")
 
 // loginFormEl.style.height = '300px'
 // emailEl.style.display ='none'
@@ -13,40 +14,53 @@ const loginFormEl = document.querySelector(".login-form")
 // nameEl.style.display ='none'
  
 loginBtn.addEventListener("click",function(){
-    loginFormEl.style.height = '300px'
+   /* loginFormEl.style.height = '300px'
     nameEl.style.display = 'inline'
     passEl.style.display = 'inline'
+    */
 
-
-let user = {userName:nameEl.value, pass:passEl.value}
+    console.log("login btn ")
+    let user = {userName:nameEl.value, pass:passEl.value}
 
     getUser()
     async function getUser(){
         
-        //console.log(user)
+        
         
         const response =  await fetch('/posts/login', {
         method:'POST',
         headers:{
-            'Content-Type': 'application/json'
+            'content-type':'application/json'
         },
         body: JSON.stringify(user)
         })
-        const r = await response.json()
-        localStorage.setItem('token', r.accessToken)
         
-        //console.log(`Bearer ${localStorage.token}`);
-        console.log("here1")
-        console.log(r)
-        if(r != null){
-            console.log("in redirect");
-            redirect();
-        }
-        else{
-            console.log("empty token")
+
+        let cookie = document.cookie
+        console.log(cookie)
+        if(cookie && (await response.json() != null)){
+            
+            const uid = cookie.split('; ').find(row => row.startsWith('uid')).split('=')[1]
+            redirect(uid);
+        }else{
+            messageEl.innerHTML = "error"
+            
         }
     }
 })
+
+async function redirect(uid){
+    
+    const res = await fetch(`/gets/account:${uid}`, {
+        method:'GET',
+        headers:{
+            
+        },
+    })
+    if(res.status == 200){
+        window.location.href = res.url
+    }
+}
     
                 
 regBtn.addEventListener('click', () =>{
@@ -63,13 +77,3 @@ forgotBtn.addEventListener('click', ()=>{
     emailEl.style.display = 'inline'
 })
 
-async function redirect(){
-    console.log('in redirect')
-    const res = await fetch('/gets/account', {
-        method:'GET',
-        headers:{
-            'Authorization': `Bearer ${localStorage.token}`
-        }
-    })
-    window.location.href = res.url
-}

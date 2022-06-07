@@ -1,6 +1,6 @@
 import express from "express";
-import Users from '../modules/Users.js'
-import login_post from '../controllers/authControllers.js'
+import Users from '../Users.js'
+import login_post from '../authControllers.js'
 import bcrypt from "bcrypt"
 const router = express.Router()
 
@@ -16,6 +16,15 @@ router.post('/newUser', async (req,res) =>{
         const user = await Users.create({name:req.body.userName, pass:hashedPass})
     } catch (error) {
         console.log(error)
+    }
+})
+
+router.post('/transaction', async (req,res) =>{
+    try {
+        const amount = await req.body.amount
+        
+    } catch (error) {
+        
     }
 })
 
