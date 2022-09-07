@@ -19,8 +19,8 @@ export  async function login_post (req,res){
                 }
                 
                 res
-                .cookie('token', accessToken , {maxAge: 100000} )
-                .cookie('uid', user[0].id, {maxAge: 100000} )
+                .cookie('token', accessToken  /*{maxAge: 100000}*/ )
+                .cookie('uid', user[0].id /*{maxAge: 100000}*/ )
                 .status(200)
                 .json({cookie : 'sent'})
                 
@@ -35,6 +35,7 @@ export  async function login_post (req,res){
         }
     }
     else{
+        console.log("incorrect username")
         res.json(null)
     }
 }

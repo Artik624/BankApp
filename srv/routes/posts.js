@@ -1,31 +1,49 @@
 import express from "express";
-import Users from '../Users.js'
-import login_post from '../authControllers.js'
-import bcrypt from "bcrypt"
-const router = express.Router()
+import Users, { userDoc } from "../Users.js";
+import login_post from "../authControllers.js";
+import bcrypt from "bcrypt";
+import mongoose from "mongoose";
+import { setTimeout } from "timers/promises";
 
-router.use(express.json())
+const router = express.Router();
 
-router.post('/login', login_post)
+router.use(express.json());
 
+router.post("/login", login_post);
 
-
-router.post('/newUser', async (req,res) =>{
+router.post("/newUser", async (req, res) => {
+  let user = await Users.find({ name: req.body.userName });
+  if (user[0] == undefined) {
     try {
-        const hashedPass = await bcrypt.hashSync(req.body.pass, 10)
-        const user = await Users.create({name:req.body.userName, pass:hashedPass})
-    } catch (error) {
-        console.log(error)
-    }
-})
+      const hashedPass = bcrypt.hashSync(req.body.pass, 10);
 
-router.post('/transaction', async (req,res) =>{
-    try {
-        const amount = await req.body.amount
-        
-    } catch (error) {
-        
-    }
-})
+      const newUser = new userDoc({
+        name: req.body.userName,
+        pass: hashedPass,
+      });
 
-export default router
+      newUser.transactions.push({});
+      await b();
+      async function b() {
+        const wait = await setTimeout(10000, "wait");
+        newUser.transactions.push({});
+      }
+      const added = await Users.create(newUser);
+      console.log(added);
+      res.json(added).status(200);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    console.log('here')
+    res.status(400).end();
+  }
+});
+
+router.post("/transaction", async (req, res) => {
+  try {
+    const amount = await req.body.amount;
+  } catch (error) {}
+});
+
+export default router;

@@ -37,14 +37,15 @@ loginBtn.addEventListener("click",function(){
         
 
         let cookie = document.cookie
-        console.log(cookie)
+        //console.log(cookie)
         if(cookie && (await response.json() != null)){
             
             const uid = cookie.split('; ').find(row => row.startsWith('uid')).split('=')[1]
             redirect(uid);
         }else{
-            messageEl.innerHTML = "error"
-            
+            messageEl.innerHTML = "Incorrect Username or password"
+            nameEl.value = "";
+            passEl.value = "";
         }
     }
 })

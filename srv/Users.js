@@ -1,10 +1,25 @@
 import mongoose from "mongoose";
 
-var transaction = new mongoose.Schema({
+/* export const transaction = new mongoose.Schema({
     date:{type:Date, default:Date.now},
     amount:{type:Number, default:0},
     currentBalance:{type:Number, default:0}
-});
+}); */
+
+const trans = new mongoose.Schema({
+
+    test:{
+        type:String,
+        default:'default'
+    }
+})
+
+const transactions = new mongoose.Schema({
+    transaction:{
+        type:trans,
+        default: () =>({})
+    }
+})
 
 export const userSchema = new mongoose.Schema({
     name:{
@@ -17,14 +32,40 @@ export const userSchema = new mongoose.Schema({
     pass:{
         type: String,
         required:[true, "Please enter a password"],
-        validate:[(val) => { }, 'custome validate']
+        validate:[(val) => { }, 'custom validate']
     },
-    transactions:[transaction],
+    balance:{
+        type:Number,
+        default:getRndBalance()
+
+    },
+    transactions:[
+        {
+            time:
+            {
+            type:Date,
+            default:Date.now 
+            },
+            amount:
+            {
+                type:Number,
+                default:0
+            },
+            currentBalance:
+            {
+                type:Number,
+                default:0
+            }
+        },
+    ],
     
 
 }, 
     {collection: 'Users'})
 
-
-
-export default mongoose.model('Users', userSchema)
+function getRndBalance(){
+    return  Math.floor(Math.random() * (1000 - 10 + 1) ) + 10;
+}
+export let userDoc = mongoose.model('Users', userSchema)
+//export default mongoose.model('Users', userSchema)
+export default userDoc
