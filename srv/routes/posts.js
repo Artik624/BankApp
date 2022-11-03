@@ -12,7 +12,7 @@ router.use(express.json());
 router.post("/login", login_post);
 
 router.post("/newUser", async (req, res) => {
-  let user = await Users.find({ name: req.body.userName });
+  let user = await Users.find({ name: req.body.userName });//check if user already exists
   if (user[0] == undefined) {
     try {
       const hashedPass = bcrypt.hashSync(req.body.pass, 10);
@@ -22,20 +22,12 @@ router.post("/newUser", async (req, res) => {
         pass: hashedPass,
       });
 
-      newUser.transactions.push({});
-      await b();
-      async function b() {
-        const wait = await setTimeout(10000, "wait");
-        newUser.transactions.push({});
-      }
       const added = await Users.create(newUser);
-      console.log(added);
       res.json(added).status(200);
     } catch (error) {
       console.log(error);
     }
   } else {
-    console.log('here')
     res.status(400).end();
   }
 });
@@ -43,6 +35,70 @@ router.post("/newUser", async (req, res) => {
 router.post("/transaction", async (req, res) => {
   try {
     const amount = await req.body.amount;
+  } catch (error) {}
+});
+
+router.post("/deposit", async (req, res) => {
+  try {
+    const uid = req.body.uid;
+    const amount = req.body.amount;
+    const usr = await Users.findById(uid);
+    const deposit = await Users.findByIdAndUpdate(
+      uid,
+      { balance: +usr.balance + +amount },
+      { new: true }
+    );
+    res.status(200).end();
+  } catch (error) {}
+});
+
+router.post("/withdraw", async (req, res) => {
+  try {
+    const uid = req.body.uid;
+    const amount = req.body.amount;
+
+    const usr = await Users.findById(uid);
+    if (usr.balance >= amount) {
+      const withdraw = await Users.findByIdAndUpdate(
+        uid,
+        { balance: +usr.balance + -amount },
+        { new: true }
+      );
+      res.status(200).end();
+    } else {
+      res.status(409).end();
+    }
+  } catch (error) {}
+});
+
+router.post("/transfer", async (req, res) => {
+  try {
+    const recipient = await Users.findOneAndUpdate(
+      { name: req.body.recipient },
+      { $inc: { balance: req.body.amount } },
+      { new: true }
+    );
+    if (recipient == undefined) {
+      res.status(404).end();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    const uid = req.body.uid;
+    const amount = req.body.amount;
+    const usr = await Users.findById(uid);
+    if (usr.balance >= amount) {
+      const send = await Users.findByIdAndUpdate(
+        uid,
+        { balance: +usr.balance + -amount },
+        { new: true }
+      );
+      res.status(200).end();
+    } else {
+      res.status(409).end();
+    }
   } catch (error) {}
 });
 

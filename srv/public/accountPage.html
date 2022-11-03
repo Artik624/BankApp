@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        
-
-        
-
-        <title>Document</title>
-        
+        <title>BankApp</title>
     </head>
     <header>
         <link rel="stylesheet" href="/account.css" type="text/css">
@@ -14,25 +9,30 @@
     <body>
         
         <div class="wrapper">
-            <div class="leftCol">
-                
-                <div class="main">
-                    <h1 id="greeting"></h1>
-                </div>
-        
-                <div class="transactions">
-                    <ul id="transacList">
-                        <li id="date">date</li>
-                        <li id="amount">amount</li>
-                        <li id="currentBalance">balance</li>
-                    </ul>
-                </div>
+
+            <div id="accInfo">
+                <h1 id="accGreeting"></h1>
+                <h3 id="accBalance"></h3>
+            </div>
+
+            <div id="seperator"></div>
+
+            <div id="accActions">
+                <button id="depBtn">Deposit</button>
+                <button id="wdBtn">Withdraw</button>
+                <button id="sendBtn">Send</button>
+                <div id="usrMessage"><p><span id="messageSpn">Choose an action</span></p></div>
             </div>
             
-            <div class="actions">actions</div>
-
-
-
+            <div id="accInput">
+                
+                <form id="accActionInput">
+                    <input type="text" name="" id="amountInput" placeholder="Choose amount">
+                    <input type="text" name="" id="accountInput" placeholder="Choose recipient">
+                </form>
+                <button id="confirmBtn">Confirm Action</button>
+            </div>
+            
         </div>
 
         

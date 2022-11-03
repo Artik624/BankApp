@@ -17,53 +17,52 @@
         <div id="buttons">
             <button id="submitBtn">Submit</button>
             <p id="status"></p>
-        </div>
-            <br>
-            <button id="addBtn">Delete user</button>
-            <input name="uid" id="uid" placeholder="uid to delete">
-        </div>
-
+        
         <script>
             const nameEl = document.getElementById("nameInpt")
             const passEl = document.getElementById("pswdInpt")
             const subBtn = document.getElementById("submitBtn")
             const statusEl = document.querySelector('#status')
-            const addBtnEl = document.querySelector('#addBtn')
-            const uidEl = document.querySelector('#uid')
+           
+            
             
             subBtn.addEventListener('click', async () =>{
                 statusEl.innerHTML = `Thinking`;
-                const newUser = {
-                    userName:nameEl.value,
-                    pass:passEl.value
-                }
-                //console.log(newUser)
-                
-                const res = await fetch('/posts/newUser', {
-                    method:'POST',
-                    headers:{
-                        'content-type' : 'application/json'
-                    },
-                    body:JSON.stringify(newUser)
-                })
-                if(res.status == 200){
+              
+                if(nameEl.value.length < 4 || passEl.value.length < 4 ){
                     
-                    const responseText = await res.json();
-                    statusEl.innerHTML=  `User ${JSON.stringify(responseText.name)} added`;
-                }else{
-                    console.log('here too')
-                    statusEl.innerHTML = `Error processing request`
+                    statusEl.innerHTML = `Username and password must be at least 4 characters long`;
                 }
+                else{
+                    const newUser = {
+                    userName:nameEl.value,
+                    ass:passEl.value
+                    }
+                    
+                    const res = await fetch('/posts/newUser', {
+                        method:'POST',
+                        headers:{
+                        'content-type' : 'application/json'
+                        },
+                        body:JSON.stringify(newUser)
+                    })
+
+                    if(res.status == 200){
+                        const responseText = await res.json();
+                        statusEl.innerHTML=  `User ${JSON.stringify(responseText.name)} added`;
+                    }
+                    else{
+                        console.log('here too')
+                        statusEl.innerHTML = `Error processing request`
+                    }   
+                }
+
+
                 
                 
             })
 
-            addBtnEl.addEventListener('click', async ()=>{
-                const uid = uidEl.value;
-                const deleted = await Users.deleteOne({_id:uid})/// export to JS file --- USERS cant be found here , error 
-                statusEl.innerHTML = deleted
 
-            })
 
         </script>
     </div>
